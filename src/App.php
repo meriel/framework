@@ -16,7 +16,7 @@ class App
         if(!empty(Routes::$routes)){
 	       
 		        
-	        	if(Routes::$routes['callback']){
+	        	if(isset(Routes::$routes['callback'])){
 
 	        		echo call_user_func(Routes::$routes['callback']);
 
