@@ -1,0 +1,14 @@
+{
+    "name": "vinas/framework",
+    "description": "vinas Framework.",
+    "keywords": ["framework", "vinas"],
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Stefano"
+        }
+    ],
+    "require": {
+        "php": ">=5.4.0"
+    }
+}
