@@ -9,7 +9,9 @@
         }
     ],
     "autoload": {
-        "classmap": ["framework/src/"]
+        "psr-0": {
+            "Vinas": "framework/src/"
+        }
     },
     "require": {
         "php": ">=5.4.0"
