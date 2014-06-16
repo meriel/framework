@@ -8,9 +8,9 @@
             "name": "Stefano"
         }
     ],
-    "autoload": {
-        "psr-0": {
-            "Vinas": "src/"
+    "autoload": { 
+        "psr-4": {
+            "": "src/"
         }
     },
     "require": {
