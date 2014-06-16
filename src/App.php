@@ -20,9 +20,9 @@ class App
 
 	        		echo call_user_func(Routes::$routes['callback']);
 
-	        	}else if (file_exists('./app/controller/' . Routes::$routes['controller'] . '.php')) {
+	        	}else if (file_exists('./app/controllers/' . Routes::$routes['controller'] . '.php')) {
 
-		        	require './app/controller/' . Routes::$routes['controller'] . '.php';
+		        	require './app/controllers/' . Routes::$routes['controller'] . '.php';
 		        	
 		        	$this->url_controller = new Routes::$routes['controller']();
 		        	
@@ -43,11 +43,11 @@ class App
 	    	
 
 	        // check for controller: does such a controller exist ?
-	        if (file_exists('./app/controller/' . $this->url_controller . '.php')) {
+	        if (file_exists('./app/controllers/' . $this->url_controller . '.php')) {
 	
 	            // if so, then load this file and create this controller
 	            // example: if controller would be "car", then this line would translate into: $this->car = new car();
-	            require './app/controller/' . $this->url_controller . '.php';
+	            require './app/controllers/' . $this->url_controller . '.php';
 	            $this->url_controller = new $this->url_controller();
 	
 	            // check for method: does such a method exist in the controller ?
@@ -79,7 +79,7 @@ class App
 	            }
 	        } else {
 	            // invalid URL, so simply show home/index
-	            require './app/controller/HomeController.php';
+	            require './app/controllers/HomeController.php';
 	            $home = new HomeController();
 	            echo $home->index();
 	        }
