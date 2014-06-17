@@ -8,6 +8,6 @@
 
 class Routes extends Facade {
 
-    protected static function getName() { return 'routes'; }
+    protected static function getName() { return 'router'; }
 
 }
