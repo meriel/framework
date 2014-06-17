@@ -10,12 +10,12 @@ abstract class Request{
     
     
     
-    static function method(){
+    function method(){
         return $_SERVER['REQUEST_METHOD'];
     }
     
     
-    static function ajax(){
+    function ajax(){
         if (isset($_SERVER['HTTP_X_REQUESTED_WITH'])
             && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) === 'xmlhttprequest') {
            return true;
@@ -23,7 +23,7 @@ abstract class Request{
         return false;
     }
     
-    static function is($path){
+    function is($path){
         
     }
     

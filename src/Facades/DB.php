@@ -6,6 +6,8 @@
  * and open the template in the editor.
  */
 
-abstract class DB extends Facade{
-    
+class DB extends Facade {
+
+    protected static function getName() { return 'database'; }
+
 }
