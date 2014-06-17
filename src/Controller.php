@@ -16,6 +16,11 @@ abstract class Controller{
     {
         //$this->openDatabaseConnection();
     }
+    
+    
+    function missingMethod($params = array()){
+        return "404";
+    }
 
     /**
      * Open the database connection with the credentials from application/config/config.php
