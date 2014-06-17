@@ -3,12 +3,12 @@
 
 
 
-abstract class View{
+abstract class View extends Facade{
 
 
 
-	public static function make($view, $data_array = array())
-    {
+	function make($view, $data_array = array())
+        {
         // load Twig, the template engine
         // @see http://twig.sensiolabs.org
         $twig_loader = new Twig_Loader_Filesystem(PATH_VIEWS);
@@ -20,6 +20,6 @@ abstract class View{
 
         // render a view while passing the to-be-rendered data
         return $twig->render($view . PATH_VIEW_FILE_TYPE, $data_array);
-    }
+        }
 
 }
