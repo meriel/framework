@@ -13,10 +13,18 @@ class App {
     }
 
     public static function get($name) {
-        $instance = static::$instances[$name];
+        if (isset(static::$instances[$name])) {
 
-        if ($instance instanceof Closure) {
-            $instance = $instance();
+
+            $instance = static::$instances[$name];
+
+            if ($instance instanceof Closure) {
+                $instance = $instance();
+            }
+        }else{
+            self::set($name,  ucfirst($name) );
+            
+            $instance = static::$instances[$name];
         }
 
         return $instance;
@@ -30,24 +38,24 @@ class App {
         // create array with URL parts in $url
 
 
-        if (!empty(Routes::$routes)) {
+        if (!empty(Router::$routes)) {
 
 
-            if (isset(Routes::$routes['callback'])) {
+            if (isset(Router::$routes['callback'])) {
 
-                echo call_user_func(Routes::$routes['callback']);
-            } else if (file_exists('./app/controllers/' . Routes::$routes['controller'] . '.php')) {
+                echo call_user_func(Router::$routes['callback']);
+            } else if (file_exists('./app/controllers/' . Router::$routes['controller'] . '.php')) {
 
-                require './app/controllers/' . Routes::$routes['controller'] . '.php';
+                require './app/controllers/' . Router::$routes['controller'] . '.php';
 
-                $this->url_controller = new Routes::$routes['controller']();
+                $this->url_controller = new Router::$routes['controller']();
 
-                if (method_exists($this->url_controller, Routes::$routes['method'])) {
+                if (method_exists($this->url_controller, Router::$routes['method'])) {
 
-                    echo $this->url_controller->{Routes::$routes['method']}(Routes::$routes['data']);
+                    echo $this->url_controller->{Router::$routes['method']}(Router::$routes['data']);
                 } else {
 
-                    echo $this->url_controller->missingMethod(Routes::$routes['data']);
+                    echo $this->url_controller->missingMethod(Router::$routes['data']);
                 }
             }
         } else {
