@@ -3,11 +3,11 @@
 
 
 
-abstract class View extends Facade{
+abstract class Views{
 
 
 
-	function make($view, $data_array = array())
+	public function make($view, $data_array = array())
         {
         // load Twig, the template engine
         // @see http://twig.sensiolabs.org
