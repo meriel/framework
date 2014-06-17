@@ -27,4 +27,14 @@ class Requests{
         
     }
     
+    
+    public function path(){
+        return $_SERVER['REQUEST_URI'];
+    }
+    
+    
+    public function url(){
+        return "http" . (($_SERVER['SERVER_PORT']==443) ? "s://" : "://") . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'];
+    }
+    
 }

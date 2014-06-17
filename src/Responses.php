@@ -6,6 +6,10 @@
  * and open the template in the editor.
  */
 
-abstract class Response{
+abstract class Responses{
     
+    
+    public function json($data = array()){
+        
+    }
 }

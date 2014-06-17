@@ -47,9 +47,8 @@ class Router {
 
             self::$routes = $data;
 
+            return $this;
 
-
-            //return call_user_func_array($route['callback'], $matches);
         }
     }
 
@@ -92,7 +91,8 @@ class Router {
                 }
             }
             self::$routes = $data;
-            //return call_user_func_array($route['callback'], $matches);
+            
+            return $this;
         }
     }
 
