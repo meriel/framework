@@ -6,16 +6,16 @@
  * and open the template in the editor.
  */
 
-abstract class Request{
+class Requests{
     
     
     
-    function method(){
+    public function method(){
         return $_SERVER['REQUEST_METHOD'];
     }
     
     
-    function ajax(){
+    public function ajax(){
         if (isset($_SERVER['HTTP_X_REQUESTED_WITH'])
             && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) === 'xmlhttprequest') {
            return true;
@@ -23,7 +23,7 @@ abstract class Request{
         return false;
     }
     
-    function is($path){
+    public function is($path){
         
     }
     
