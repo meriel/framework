@@ -1,15 +1,21 @@
 <?php
 
-
-
 class Requests {
     
+    public $headers;
+    
+    
+    public function __construct() {
+        
+        $this->headers = new Headers(Headers::getHeaders($this->server()));
+        
+    }
+
     /**
      * Return current server request method
      *
      * @return string
      */
-
     public function method() {
         return $this->server('REQUEST_METHOD');
     }
@@ -23,25 +29,49 @@ class Requests {
     }
 
     public function header($key = null, $default = null) {
-        $headers = array();
+        /*$headers = array();
         foreach ($_SERVER as $k => $value) {
             if (strpos($k, 'HTTP_') === 0) {
                 $headers[str_replace(' ', '', strtoupper(substr($k, 5)))] = $value;
             }
         }
-        return isset($headers[$key]) ? $headers[$key] : null;
+        return isset($headers[$key]) ? $headers[$key] : null;*/
+        
+        if ($key) {
+            return $this->headers->get($key, $default);
+        }
+
+        return $this->headers;
     }
 
-    public function is($path) {
+    public function is() {
+        foreach (func_get_args() as $pattern) {
+            
+            if(substr($pattern, 0, 1) !== '/'){
+                $pattern = "/" . $pattern;
+            }
         
+            if ($pattern == urldecode($this->path())) return true;
+            
+            $pattern = preg_quote($pattern, '#');
+            
+            $pattern = str_replace('\*', '.*', $pattern).'\z';            
+            
+            return (bool) preg_match('#^'.$pattern.'#', urldecode($this->path()));
+        }
+
+        return false;
     }
 
     public function isJson() {
         return str_contains($this->header('CONTENT_TYPE'), '/json');
     }
 
-    public function server($env) {
-        return $_SERVER[$env];
+    public function server($env = null) {
+        if($env)
+            return $_SERVER[$env];
+        else
+            return $_SERVER;
     }
 
     public function uri() {
