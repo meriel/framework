@@ -37,4 +37,8 @@ class Requests{
         return "http" . (($_SERVER['SERVER_PORT']==443) ? "s://" : "://") . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'];
     }
     
+    public function uri(){
+        return isset($_GET['url']) ? "/" . rtrim($_GET['url'], '/') : '/';
+    }
+    
 }

@@ -29,16 +29,22 @@ class App {
 
         return $instance;
     }
+    
+    public function run(){
+        
+    }
 
-    private $url_controller = null;
-    private $url_action = null;
-    private $url_params = array();
+
 
     public function __construct() {
         // create array with URL parts in $url
+        foreach(Route::getRoutes() as $route){
+            if($route->matches()){
+               echo $route->run();
+            }
+        }
 
-
-        if (!empty(Router::$routes)) {
+        /*if (!empty(Router::$routes)) {
 
 
             if (isset(Router::$routes['callback'])) {
@@ -87,13 +93,13 @@ class App {
                 $home = new HomeController();
                 echo $home->index();
             }
-        }
+        }*/
     }
 
     /**
      * Get and split the URL
      */
-    private function splitUrl() {
+    /*private function splitUrl() {
         if (isset($_GET['url'])) {
 
             // split URL
@@ -111,6 +117,6 @@ class App {
                 $this->url_params = $url;
             }
         }
-    }
+    }*/
 
 }

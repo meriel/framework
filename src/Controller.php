@@ -3,19 +3,19 @@
 /**
  * This is the "base controller class". All other "real" controllers extend this class.
  */
-abstract class Controller{
+class Controller{
     /**
      * @var null Database Connection
      */
     public $db = null;
+    private $controller = null;
+    private $action = null;
+    private $params = array();
     /**
      * Whenever a controller is created, open a database connection too. The idea behind is to have ONE connection
      * that can be used by multiple models (there are frameworks that open one connection per model).
      */
-    function __construct()
-    {
-        //$this->openDatabaseConnection();
-    }
+    function __construct(){}
     
     
     function missingMethod($params = array()){
@@ -24,14 +24,7 @@ abstract class Controller{
 
    
 
-    /**
-     * Load the model with the given name.
-     * loadModel("SongModel") would include models/songmodel.php and create the object in the controller, like this:
-     * $songs_model = $this->loadModel('SongsModel');
-     * Note that the model class name is written in "CamelCase", the model's filename is the same in lowercase letters
-     * @param string $model_name The name of the model
-     * @return object model
-     */
+  
     public function loadModel($model_name)
     {
         require 'app/models/' . strtolower($model_name) . '.php';

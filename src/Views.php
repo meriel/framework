@@ -3,7 +3,7 @@
 
 
 
-abstract class Views{
+class Views{
 
 
 
