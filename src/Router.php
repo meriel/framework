@@ -2,51 +2,15 @@
 
 class Router {
 
-    public $routes = array();
+    private $routes = array();
+    
+    public  $matchedRoutes = array();
+
 
     public function get($uri, $action) {
 
         return $this->addRoute("GET", $uri, $action);
-        /* $data = array();
-          $req_url = isset($_GET['url']) ? "/" . rtrim($_GET['url'], '/') : '/';
-          $req_met = $_SERVER['REQUEST_METHOD'];
-
-          $pattern = "@^" . preg_replace('/\\\:[a-zA-Z0-9\_\-]+/', '([a-zA-Z0-9\-\_]+)', preg_quote($route)) . "$@D";
-
-
-
-          $matches = array();
-          // check if the current request matches the expression
-          if ($req_met == "GET" && preg_match($pattern, $req_url, $matches)) {
-          // remove the first match
-          array_shift($matches);
-          // call the callback with the matched positions as params
-          if (is_callable($controller)) {
-
-          $data = array(
-          "request" => $req_url,
-          "controller" => null,
-          "method" => null,
-          "data" => array(),
-          "callback" => $controller
-          );
-          } else if (is_string($controller)) {
-
-          if (is_array($call = explode("@", $controller))) {
-
-          $data = array(
-          "request" => $req_url,
-          "controller" => $call[0],
-          "method" => $call[1],
-          "data" => $matches
-          );
-          }
-          }
-
-
-          self::$routes = $data;
-
-          } */
+        
     }
 
     public function post($uri, $action) {
@@ -96,20 +60,47 @@ class Router {
         list($class, $method) = explode('@', $controller);
 
         $closure = new $class();
+        
+        if(!method_exists($closure, $method)){
+           $method = "missingMethod";
+        }
 
-        return array( $closure, $method);
+        return array($closure, $method);
     }
 
     protected function add(Routes $route) {
         return $this->routes[] = $route;
     }
 
-    public function dispatch(Request $request) {
+    //public function dispatch(Request $request) {}
+
+    public function getRoutes() {
+        
+    
+        $this->matchedRoutes = array();
+        foreach ($this->routes as $route) {
+            
+             if($route->matches()){
+                 $this->matchedRoutes[] = $route;
+             }
+             
+        }
+        
+        return $this->matchedRoutes;
+    }
+
+    
+    public function controllers(array $controllers) {
+        foreach ($controllers as $uri => $name) {
+            $this->controller($uri, $name);
+        }
+    }
+
+    public function controller($uri, $controller, $names = array()) {
         
     }
 
-    public function getRoutes() {
-        return $this->routes;
+    protected function addFallthroughRoute($controller, $uri) {
     }
 
 }

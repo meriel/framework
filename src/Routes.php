@@ -11,7 +11,7 @@ class Routes {
     protected $uri;
     protected $methods;
     protected $action;
-    protected $parameters;
+    protected $parameters = array();
 
     public function __construct($method, $uri, $action) { 
         $this->uri = $uri;
@@ -29,17 +29,27 @@ class Routes {
         $matches = array();
 
         if (Request::method() == $this->methods && preg_match($pattern, Request::path(), $matches)) {
+            
+            array_shift($matches);
+            
+            $this->parameters = $matches;
+            
             return true;
         }
 
         return false;
     }
+    
+    
+    public function parameters(){
+        return $this->parameters;
+    }
 
     public function run() {
-        /*$parameters = array_filter($this->parameters(), function($p) {
+        
+        $parameters = array_filter($this->parameters(), function($p) {
             return isset($p);
-        });*/
-        $parameters = array();        
+        });
         
 
         return call_user_func_array($this->action['uses'], $parameters);

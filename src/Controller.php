@@ -1,24 +1,20 @@
 <?php
 
-/**
- * This is the "base controller class". All other "real" controllers extend this class.
- */
+
 class Controller{
-    /**
-     * @var null Database Connection
-     */
+  
+    
     public $db = null;
     private $controller = null;
     private $action = null;
     private $params = array();
-    /**
-     * Whenever a controller is created, open a database connection too. The idea behind is to have ONE connection
-     * that can be used by multiple models (there are frameworks that open one connection per model).
-     */
-    function __construct(){}
+   
     
     
-    function missingMethod($params = array()){
+    public function __construct(){}
+    
+    
+    public function missingMethod($params = array()){
         return "404";
     }
 

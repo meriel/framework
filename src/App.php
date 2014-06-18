@@ -1,8 +1,5 @@
 <?php
 
-
-
-
 class App {
 
     private static $instances = array();
@@ -22,7 +19,7 @@ class App {
         static::$instances[$name] = $instance;
     }
 
-     /**
+    /**
      * Get an object instance from $instances Array.
      *
      * @param  $name
@@ -37,8 +34,8 @@ class App {
             if ($instance instanceof Closure) {
                 $instance = $instance();
             }
-        }else{
-            self::set($name,  ucfirst($name) );
+        } else {
+            self::set($name, ucfirst($name));
 
             $instance = static::$instances[$name];
         }
@@ -46,25 +43,42 @@ class App {
         return $instance;
     }
 
-    public function run(){}
-
-
+    public function run() {
+        
+    }
 
     public function __construct() {
+
+        //ob_start();
+        $dispatched = false;
         $routes = Route::getRoutes();
 
-        if($routes){
+        foreach ($routes as $route) {
 
 
-            foreach($routes as $route){
-                if($route->matches()){
-                   echo $route->run();
+            try {
+                $dispatched = $route->run();
+                if ($dispatched) {
+                    break;
                 }
+            } catch (Exception $e) {
+                continue;
             }
-
-        }else{
-            //controller
         }
+
+        if (!$dispatched) {
+            $this->notFound();
+        } else {
+
+
+
+            Response::setContent($dispatched)->send();
+        }
+    }
+
+    protected function notFound() {
+
+        Response::setContent( View::make('404') )->send();
     }
 
 }
