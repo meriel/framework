@@ -30,19 +30,28 @@ class App {
         return $instance;
     }
     
-    public function run(){
-        
-    }
+    public function run(){}
 
 
 
     public function __construct() {
         // create array with URL parts in $url
-        foreach(Route::getRoutes() as $route){
-            if($route->matches()){
-               echo $route->run();
+        $routes = Route::getRoutes();
+        
+        if($routes){
+            
+        
+            foreach($routes as $route){
+                if($route->matches()){
+                   echo $route->run();
+                }
             }
+            
+        }else{
+            //controller
         }
+        
+        
 
         /*if (!empty(Router::$routes)) {
 

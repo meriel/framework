@@ -28,7 +28,7 @@ class Routes {
         $pattern = "@^" . preg_replace('/\\\:[a-zA-Z0-9\_\-]+/', '([a-zA-Z0-9\-\_]+)', preg_quote($this->uri)) . "$@D";
         $matches = array();
 
-        if (Request::method() == $this->methods && preg_match($pattern, Request::uri(), $matches)) {
+        if (Request::method() == $this->methods && preg_match($pattern, Request::path(), $matches)) {
             return true;
         }
 
