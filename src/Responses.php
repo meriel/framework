@@ -71,9 +71,7 @@ class Responses {
         $this->headers = clone $this->headers;
     }
 
-    public function json($data = array()) {
-        
-    }
+    public function json($data = array()) {}
 
     public function sendHeaders() {
         // headers have already been sent by the developer
