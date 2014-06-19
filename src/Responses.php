@@ -71,7 +71,9 @@ class Responses {
         $this->headers = clone $this->headers;
     }
 
-    public function json($data = array()) {}
+    public function json($data = array()) {
+        
+    }
 
     public function sendHeaders() {
         // headers have already been sent by the developer
@@ -94,6 +96,15 @@ class Responses {
     }
 
     public function setContent($content) {
+
+
+        if ($this->couldBeJson($content)) {
+            $this->headers->set('Content-Type', 'application/json');
+
+            $content = $this->toJson($content);
+        }
+
+
         if (null !== $content && !is_string($content) && !is_numeric($content) && !is_callable(array($content, '__toString'))
         ) {
             throw new Exception(sprintf('The Response content must be a string or object implementing __toString(), "%s" given.', gettype($content)));
@@ -104,6 +115,15 @@ class Responses {
         $this->content = (string) $content;
 
         return $this;
+    }
+
+    protected function couldBeJson($content) {
+        return is_array($content);
+    }
+
+    protected function toJson($content) {
+
+        return json_encode($content);
     }
 
     public function sendContent() {
@@ -117,9 +137,8 @@ class Responses {
         $this->sendHeaders();
         $this->sendContent();
     }
-    
-    public function setProtocolVersion($version)
-    {
+
+    public function setProtocolVersion($version) {
         $this->version = $version;
 
         return $this;

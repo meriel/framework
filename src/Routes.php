@@ -1,10 +1,5 @@
 <?php
 
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 
 class Routes {
 
@@ -18,9 +13,7 @@ class Routes {
         $this->methods = $method;
         $this->action = $this->parseAction($action);
 
-        //if (isset($this->action['prefix'])) {
-        //    $this->prefix($this->action['prefix']);
-        // }
+      
     }
 
     public function matches() {

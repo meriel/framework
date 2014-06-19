@@ -1,37 +1,40 @@
 <?php
 
-/* 
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 
-abstract class Database{
-    
+
+class Database {
+
     protected $db = null;
-    
     private $error;
-            
+
     function __construct() {
-        
+
         $options = array(
-            PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_OBJ, 
+            PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_OBJ,
             PDO::ATTR_ERRMODE => PDO::ERRMODE_WARNING,
             PDO::ATTR_PERSISTENT => true
         );
-        try{
+        try {
             $this->db = new PDO(DB_TYPE . ':host=' . DB_HOST . ';dbname=' . DB_NAME, DB_USER, DB_PASS, $options);
         }
         // Catch any errors
-        catch(PDOException $e){
+        catch (PDOException $e) {
             $this->error = $e->getMessage();
         }
     }
-    
-    
-    function get(){
+
+    function getPdo() {
         return $this->db;
     }
-    
-    
+
+    public function select($query, $params = array()) {
+        try {
+            $stmt = $this->db->prepare($query);
+            $stmt->execute($params);
+            return $stmt->fetchAll();
+        } catch (PDOException $e) {
+            throw new Exception($e->getMessage());
+        }
+    }
+
 }

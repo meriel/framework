@@ -96,11 +96,7 @@ class Router {
         }
     }
 
-    public function controller($uri, $controller, $names = array()) {
-        
-    }
+    public function controller($uri, $controller, $names = array()) {}
 
-    protected function addFallthroughRoute($controller, $uri) {
-    }
 
 }
