@@ -4,9 +4,7 @@ use Response;
 
 class Application extends \Meriel\Container\Container {
 
-    public function __construct() {
-        
-    }
+    public function __construct() {}
 
     public function run() {
 
