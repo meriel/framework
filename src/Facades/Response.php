@@ -1,4 +1,4 @@
-<?php
+<?php namespace Meriel\Facades;
 
 
 /* 
@@ -7,8 +7,8 @@
  * and open the template in the editor.
  */
 
-class Response extends Facade {
+class Response extends \Meriel\Facades\Facade {
 
-    protected static function getName() { return 'responses'; }
+    protected static function getName() { return 'response'; }
 
 }

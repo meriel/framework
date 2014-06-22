@@ -1,4 +1,4 @@
-<?php
+<?php namespace Meriel\View;
 
 class Views {
 
@@ -15,8 +15,8 @@ class Views {
 
     public function render(Closure $callback = null){
         
-        $twig_loader = new Twig_Loader_Filesystem(PATH_VIEWS);
-        $twig = new Twig_Environment($twig_loader);
+        $twig_loader = new \Twig_Loader_Filesystem(PATH_VIEWS);
+        $twig = new \Twig_Environment($twig_loader);
 
         //$twig->addFunction('parseText', new Twig_Function_Function('parseText'));
         //$twig->addFunction('unserializeArray', new Twig_Function_Function('unserializeArray'));

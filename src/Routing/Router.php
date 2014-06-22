@@ -1,4 +1,4 @@
-<?php
+<?php namespace Meriel\Routing;
 
 class Router {
 
@@ -31,7 +31,7 @@ class Router {
 
         //var_dump($action);
 
-        $route = new Routes($methods, $uri, $action);
+        $route = new \Meriel\Routing\Routes($methods, $uri, $action);
 
         return $route;
     }

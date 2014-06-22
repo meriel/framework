@@ -1,4 +1,4 @@
-<?php
+<?php namespace Meriel\Facades;
 
 /* 
  * To change this license header, choose License Headers in Project Properties.
@@ -6,8 +6,8 @@
  * and open the template in the editor.
  */
 
-class View extends Facade {
+class View extends \Meriel\Facades\Facade {
 
-    protected static function getName() { return 'views'; }
+    protected static function getName() { return 'view'; }
 
 }

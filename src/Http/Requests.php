@@ -1,4 +1,4 @@
-<?php
+<?php namespace Meriel\Http;
 
 class Requests {
     
@@ -7,7 +7,7 @@ class Requests {
     
     public function __construct() {
         
-        $this->headers = new Headers(Headers::getHeaders($this->server()));
+        $this->headers = new \Meriel\Http\Headers(\Meriel\Http\Headers::getHeaders($this->server()));
         
     }
 

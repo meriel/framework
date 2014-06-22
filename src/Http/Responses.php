@@ -1,4 +1,4 @@
-<?php
+<?php namespace Meriel\Http;
 
 class Responses {
 

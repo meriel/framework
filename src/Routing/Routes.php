@@ -1,5 +1,6 @@
-<?php
+<?php namespace Meriel\Routing;
 
+use Request;
 
 class Routes {
 
