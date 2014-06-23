@@ -40,19 +40,17 @@ class Application extends \Meriel\Container\Container {
 
     public function registerCoreContainerAliases() {
         
-        $this->register('router', function() {
-            return new \Meriel\Routing\Router();
-        });
-        $this->register('request', function() {
-            return new \Meriel\Http\Requests();
-        });
-        $this->register('view', function() {
-            return new \Meriel\View\Views();
-        });
-        $this->register('response', function() {
-            return new \Meriel\Http\Responses();
-        });
-       
+        $aliases = array(
+            
+            'router' => '\Meriel\Routing\Router',
+            'request' => '\Meriel\Http\Requests',
+            'view' => '\Meriel\View\Views',
+            'response' => '\Meriel\Http\Responses',
+            'database' => '\Meriel\Database\Database'
+            
+        );
+        
+        $this->registerProviders($aliases);
         
        
         

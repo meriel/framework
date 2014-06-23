@@ -1,5 +1,8 @@
 <?php namespace Meriel\Database;
 
+use Config;
+use PDO;
+
 class Database {
 
     protected $db = null;
@@ -14,6 +17,8 @@ class Database {
     }
 
     function __construct() {
+        
+        $config = Config::get('database');
 
         $options = array(
             PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_OBJ,
@@ -21,7 +26,9 @@ class Database {
             PDO::ATTR_PERSISTENT => true
         );
         try {
-            $this->db = new PDO(DB_TYPE . ':host=' . DB_HOST . ';dbname=' . DB_NAME, DB_USER, DB_PASS, $options);
+            $this->db = new PDO($config['connection']['driver'] . ':host=' . 
+                    $config['connection']['host'] . ';dbname=' . $config['connection']['database'], 
+                    $config['connection']['username'], $config['connection']['password'], $options);
         }
         // Catch any errors
         catch (PDOException $e) {
