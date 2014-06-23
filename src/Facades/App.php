@@ -3,6 +3,6 @@
 
 class App extends \Meriel\Facades\Facade {
 
-    protected static function getName() { return 'application'; }
+    protected static function getName() { return 'app'; }
 
 }

@@ -4,6 +4,7 @@ if ( ! function_exists('path') ){
     
     function path($folder){
         
+        //return App::get("path.{$folder}");
         
     }
     

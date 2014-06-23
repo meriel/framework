@@ -1,6 +1,5 @@
 <?php namespace Meriel\Base;
 
-use Response;
 
 class Application extends \Meriel\Container\Container {
 
@@ -30,14 +29,13 @@ class Application extends \Meriel\Container\Container {
         } else {
 
 
-
-            Response::setContent($dispatched)->send();
+            $this['response']->setContent($dispatched)->send();
         }
     }
 
     protected function notFound() {
 
-        Response::setContent(View::make('404'))->send();
+        $this['response']->setContent($this['view']->make('404'))->send();
     }
 
     public function registerCoreContainerAliases() {
@@ -54,6 +52,7 @@ class Application extends \Meriel\Container\Container {
         $this->register('response', function() {
             return new \Meriel\Http\Responses();
         });
+       
         
        
         
@@ -80,5 +79,6 @@ class Application extends \Meriel\Container\Container {
     public function __set($key, $value) {
         $this[$key] = $value;
     }
-
+    
+   
 }

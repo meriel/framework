@@ -2,6 +2,6 @@
 
 class Config extends \Meriel\Facades\Facade {
 
-    protected static function getName() { return 'loader'; }
+    protected static function getName() { return 'config'; }
 
 }

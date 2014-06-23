@@ -1,5 +1,7 @@
 <?php namespace Meriel\View;
 
+use Config;
+
 class Views {
 
     protected $view;
@@ -15,12 +17,14 @@ class Views {
 
     public function render(Closure $callback = null){
         
-        $twig_loader = new \Twig_Loader_Filesystem(PATH_VIEWS);
+        $view_config = Config::get('view');
+        
+        $twig_loader = new \Twig_Loader_Filesystem($view_config['paths']);
         $twig = new \Twig_Environment($twig_loader);
 
-        //$twig->addFunction('parseText', new Twig_Function_Function('parseText'));
+        //$twig->addFunction('path', new \Twig_Function_Function('path'));
         //$twig->addFunction('unserializeArray', new Twig_Function_Function('unserializeArray'));
-        $contents = $twig->render($this->view . PATH_VIEW_FILE_TYPE, $this->data);
+        $contents = $twig->render($this->view . $view_config['file_type'], $this->data);
         
         $response = isset($callback) ? $callback($this, $contents) : null;
         
