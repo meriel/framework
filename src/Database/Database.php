@@ -16,9 +16,11 @@ class Database {
         
     }
 
-    function __construct() {
+    function __construct() { return;
         
         $config = Config::get('database');
+        
+      
 
         $options = array(
             PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_OBJ,

@@ -7,7 +7,9 @@ class Application extends \Meriel\Container\Container {
 
     public function run() {
 
-        //ob_start();
+        \SassCompiler::run( $this['path.public'] . "/scss/", $this['path.public'] . "/css/");
+        
+        
         $dispatched = false;
         $routes = $this['router']->getRoutes();
 

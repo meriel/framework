@@ -1,14 +1,15 @@
-<?php namespace Meriel\Http;
+<?php
+
+namespace Meriel\Http;
+use Config;
 
 class Requests {
-    
+
     public $headers;
-    
-    
+
     public function __construct() {
-        
+
         $this->headers = new \Meriel\Http\Headers(\Meriel\Http\Headers::getHeaders($this->server()));
-        
     }
 
     /**
@@ -29,14 +30,14 @@ class Requests {
     }
 
     public function header($key = null, $default = null) {
-        /*$headers = array();
-        foreach ($_SERVER as $k => $value) {
-            if (strpos($k, 'HTTP_') === 0) {
-                $headers[str_replace(' ', '', strtoupper(substr($k, 5)))] = $value;
-            }
-        }
-        return isset($headers[$key]) ? $headers[$key] : null;*/
-        
+        /* $headers = array();
+          foreach ($_SERVER as $k => $value) {
+          if (strpos($k, 'HTTP_') === 0) {
+          $headers[str_replace(' ', '', strtoupper(substr($k, 5)))] = $value;
+          }
+          }
+          return isset($headers[$key]) ? $headers[$key] : null; */
+
         if ($key) {
             return $this->headers->get($key, $default);
         }
@@ -46,18 +47,19 @@ class Requests {
 
     public function is() {
         foreach (func_get_args() as $pattern) {
-            
-            if(substr($pattern, 0, 1) !== '/'){
+
+            if (substr($pattern, 0, 1) !== '/') {
                 $pattern = "/" . $pattern;
             }
-        
-            if ($pattern == urldecode($this->path())) return true;
-            
+
+            if ($pattern == urldecode($this->path()))
+                return true;
+
             $pattern = preg_quote($pattern, '#');
-            
-            $pattern = str_replace('\*', '.*', $pattern).'\z';            
-            
-            return (bool) preg_match('#^'.$pattern.'#', urldecode($this->path()));
+
+            $pattern = str_replace('\*', '.*', $pattern) . '\z';
+
+            return (bool) preg_match('#^' . $pattern . '#', urldecode($this->path()));
         }
 
         return false;
@@ -68,8 +70,8 @@ class Requests {
     }
 
     public function server($env = null) {
-        if($env)
-            return $_SERVER[$env];
+        if ($env)
+            return isset($_SERVER[$env]) ? $_SERVER[$env] : null;
         else
             return $_SERVER;
     }
@@ -84,7 +86,13 @@ class Requests {
     }
 
     public function path() {
-        return isset($_GET['url']) ? "/" . rtrim($_GET['url'], '/') : '/';
+        $path_info = $this->server('PATH_INFO');
+        if (isset($path_info)) {
+            return $path_info;
+        }
+        $config = Config::get('app');
+        return  str_replace($config['url'], '', $this->uri());
+       //return isset($_GET['url']) ? "/" . rtrim($_GET['url'], '/') : '/';
     }
 
     private function getQueryString() {
