@@ -2,12 +2,25 @@
 
 if ( ! function_exists('path') ){
     
-    function path($folder){
+    function public_path($path = ''){
         
-        //return App::get("path.{$folder}");
+        return App::get("path.public").($path ? '/'.$path : $path);
         
     }
     
+}
+
+
+if ( ! function_exists('url'))
+{
+    
+    function url($path = ''){
+        
+        $config = Config::get('app');
+                
+        return $config['url'].($path ? '/'.$path : $path);
+    }
+
 }
 
 if ( ! function_exists('escape') )

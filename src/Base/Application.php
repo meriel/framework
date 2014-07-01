@@ -1,15 +1,17 @@
-<?php namespace Meriel\Base;
+<?php
 
+namespace Meriel\Base;
 
 class Application extends \Meriel\Container\Container {
 
-    public function __construct() {}
+    public function __construct() {
+        
+    }
 
     public function run() {
 
-        \SassCompiler::run( $this['path.public'] . "/scss/", $this['path.public'] . "/css/");
-        
-        
+        \SassCompiler::run($this['path.public'] . "/scss/", $this['path.public'] . "/css/");
+
         $dispatched = false;
         $routes = $this['router']->getRoutes();
 
@@ -41,21 +43,16 @@ class Application extends \Meriel\Container\Container {
     }
 
     public function registerCoreContainerAliases() {
-        
+
         $aliases = array(
-            
             'router' => '\Meriel\Routing\Router',
             'request' => '\Meriel\Http\Requests',
             'view' => '\Meriel\View\Views',
             'response' => '\Meriel\Http\Responses',
             'database' => '\Meriel\Database\Database'
-            
         );
-        
+
         $this->registerProviders($aliases);
-        
-       
-        
     }
 
     public function bindBasePaths($paths) {
@@ -72,13 +69,21 @@ class Application extends \Meriel\Container\Container {
         
     }
 
-    public function __get($key) {
-        return $this[$key];
+    /* public function __get($key) {
+      return $this[$key];
+      }
+
+      public function __set($key, $value) {
+      $this[$key] = $value;
+      } */
+
+    public function get($type) {
+        
+        if($this[$type]){
+            return $this[$type];
+        }
+        
+        return null;
     }
 
-    public function __set($key, $value) {
-        $this[$key] = $value;
-    }
-    
-   
 }
