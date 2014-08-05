@@ -8,7 +8,7 @@ class Application extends \Meriel\Container\Container {
         
     }
 
-    public function run() {
+    public function run() { 
 
         \SassCompiler::run($this['path.public'] . "/scss/", $this['path.public'] . "/css/");
 
