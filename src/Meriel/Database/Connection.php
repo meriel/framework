@@ -1,6 +1,15 @@
-<?php
+<?php namespace Meriel\Database;
 
-namespace Meriel\Database;
+
+/*
+ * This file is part of the Meriel framework.
+ *
+ * (c) Stefano Anedda <dearste@gmail.com>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 
 use PDO;
 use Closure;
@@ -16,15 +25,10 @@ class Connection {
     protected $config = array();
 
     public function __construct(PDO $pdo, $database = '', $tablePrefix = '', array $config = array()) {
+        
         $this->pdo = $pdo;
-
-// First we will setup the default properties. We keep track of the DB
-// name we are connected to since it is needed when some reflective
-// type commands are run such as checking whether a table exists.
         $this->database = $database;
-
         $this->tablePrefix = $tablePrefix;
-
         $this->config = $config;
     }
 

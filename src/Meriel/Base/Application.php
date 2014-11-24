@@ -1,6 +1,15 @@
-<?php
+<?php namespace Meriel\Base;
 
-namespace Meriel\Base;
+
+/*
+ * This file is part of the Meriel framework.
+ *
+ * (c) Stefano Anedda <dearste@gmail.com>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 
 class Application extends \Meriel\Container\Container {
 
@@ -9,8 +18,6 @@ class Application extends \Meriel\Container\Container {
     }
 
     public function run() { 
-
-        \SassCompiler::run($this['path.public'] . "/scss/", $this['path.public'] . "/css/");
 
         $dispatched = false;
         $routes = $this['router']->getRoutes();
@@ -65,9 +72,7 @@ class Application extends \Meriel\Container\Container {
         }
     }
 
-    public function registerServices($app) {
-        
-    }
+    public function registerServices($app) {}
 
     /* public function __get($key) {
       return $this[$key];
