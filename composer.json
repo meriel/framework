@@ -9,16 +9,14 @@
         }
     ],
     "autoload": {
-        "classmap": [
-            "src/"
-        ],
+        "classmap": [],
         "files": [
             "src/Support/helpers.php"
         ],
         "psr-0": {
             "Meriel": "src/"
         }
-    },
+    }, 
     "require": {
         "php": ">=5.4.0",
         "twig/twig": "1.*"
