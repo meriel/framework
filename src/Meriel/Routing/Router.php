@@ -62,14 +62,14 @@ class Router {
 
     protected function getControllerAction($action) {
         if (is_string($action))
-            $action = array('uses' => $action);
+            $action = array('fn' => $action);
 
 
-        $action['controller'] = $action['uses'];
+        $action['controller'] = $action['fn'];
 
-        $closure = $this->getClassClosure($action['uses']);
+        $closure = $this->getClassClosure($action['fn']);
 
-        return $action = array('uses' => $closure);
+        return $action = array('fn' => $closure);
     }
 
     protected function getClassClosure($controller) {

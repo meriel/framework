@@ -59,6 +59,10 @@ class Connection {
     public function update($query, $bindings = array()) {
         return $this->affectingStatement($query, $bindings);
     }
+    
+    public function delete($query, $bindings = array()) {
+        return $this->affectingStatement($query, $bindings);
+    }
 
     public function getFetchMode() {
         return $this->fetchMode;
@@ -94,12 +98,8 @@ class Connection {
     public function affectingStatement($query, $bindings = array()) {
         return $this->run($query, $bindings, function($self, $query, $bindings) {
                 
-                //if ($me->pretending()) return 0;
-                   
                 $statement = $self->getPdo()->prepare($query);                    
                
-                //var_dump($self->prepareBindings($bindings));
-
                 $statement->execute($self->prepareBindings($bindings));
 
                 return $statement->rowCount();

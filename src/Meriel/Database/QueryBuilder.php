@@ -52,8 +52,6 @@ class QueryBuilder {
         return new QueryBuilder($this->connection);
     }
 
-
-
     function __clone() {
         $this->connection = clone $this->connection;
     }
@@ -61,7 +59,7 @@ class QueryBuilder {
     public function update(array $values) {
         $bindings = array_values(array_merge($values, $this->getBindings()));
 
-        $sql = $this->compileUpdate($values);      
+        $sql = $this->compileUpdate($values);
 
         return $this->connection->update($sql, $this->cleanBindings($bindings));
     }
@@ -206,8 +204,6 @@ class QueryBuilder {
 
         return $this;
     }
-
-
 
     protected function concatenate($segments) {
         return implode(' ', array_filter($segments, function($value) {
@@ -388,6 +384,24 @@ class QueryBuilder {
 
     public function getConnection() {
         return $this->connection;
+    }
+
+    public function delete($id = null) {
+
+        if (!is_null($id))
+            $this->where('id', '=', $id);
+        $sql = $this->compileDelete($this);
+        return $this->connection->delete($sql, $this->getBindings());
+    }
+
+    public function compileDelete($query) {
+        $table = $this->from;
+        $where = is_array($query->wheres) ? $this->compileWheres($query) : '';
+        if (isset($query->joins)) {
+            $joins = ' ' . $this->compileJoins($query, $query->joins);
+            return trim("delete $table from {$table}{$joins} $where");
+        }
+        return trim("delete from $table $where");
     }
 
 }

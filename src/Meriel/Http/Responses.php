@@ -83,7 +83,7 @@ class Responses {
     }
 
     public function json($data = array()) {
-        
+        return $this->toJson($data);
     }
 
     public function sendHeaders() {
@@ -93,12 +93,12 @@ class Responses {
         }
 
         header(sprintf('HTTP/%s %s', $this->version, $this->getMessageForCode($this->status)));
-
-
+        //var_dump(sprintf('HTTP/%s %s', $this->version, $this->getMessageForCode($this->status)));
+        
         // headers
         foreach ($this->headers->all() as $name => $value) {
-            $_values = explode("\n", $value);
-            foreach ($_values as $_val) {
+            //$_values = explode("\n", $value); var_dump($value);
+            foreach ($value as $_val) {
                 header("$name: $_val", false);
             }
         }

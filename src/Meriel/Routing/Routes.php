@@ -1,4 +1,6 @@
-<?php namespace Meriel\Routing;
+<?php
+
+namespace Meriel\Routing;
 
 use Request;
 
@@ -9,33 +11,46 @@ class Routes {
     protected $action;
     protected $parameters = array();
 
-    public function __construct($method, $uri, $action) { 
+    public function __construct($method, $uri, $action) {
         $this->uri = $uri;
         $this->methods = $method;
         $this->action = $this->parseAction($action);
-
-      
     }
 
     public function matches() {
 
-        $pattern = "@^" . preg_replace('/\\\:[a-zA-Z0-9\_\-]+/', '([a-zA-Z0-9\-\_]+)', preg_quote($this->uri)) . "$@D";
+        $uri = $this->getCurrentUri();
+
         $matches = array();
 
-        if (Request::method() == $this->methods && preg_match($pattern, Request::path(), $matches)) {
-            
-            array_shift($matches);
-            
-            $this->parameters = $matches;
-            
+        //if (Request::method() == $this->methods && preg_match($pattern, Request::path(), $matches)) {
+        if (Request::method() == $this->methods && preg_match_all('#^' . $this->uri . '$#', $uri, $matches, PREG_OFFSET_CAPTURE)) {
+            //var_dump($matches);
+            //array_shift($matches);
+            $matches = array_slice($matches, 1);
+
+           // $this->parameters = $matches;
+
+
+
+            $this->parameters = array_map(function($match, $index) use ($matches) {
+                
+                if (isset($matches[$index + 1]) && isset($matches[$index + 1][0]) && is_array($matches[$index + 1][0])) {
+                    return trim(substr($match[0][0], 0, $matches[$index + 1][0][1] - $match[0][1]), '/');
+                }
+                
+                else {
+                    return (isset($match[0][0]) ? trim($match[0][0], '/') : null);
+                }
+            }, $matches, array_keys($matches));
+
             return true;
         }
 
         return false;
     }
-    
-    
-    public function parameters(){
+
+    public function parameters() {
         return $this->parameters;
     }
 
@@ -44,18 +59,18 @@ class Routes {
         $parameters = array_filter($this->parameters(), function($p) {
             return isset($p);
         });
-        
 
-        return call_user_func_array($this->action['uses'], $parameters);
+
+        return call_user_func_array($this->action['fn'], $parameters);
     }
 
     protected function parseAction($action) {
         if (is_callable($action)) {
 
-            return array('uses' => $action);
-        } elseif (!isset($action['uses'])) {
+            return array('fn' => $action);
+        } elseif (!isset($action['fn'])) {
 
-            $action['uses'] = $this->findClosure($action);
+            $action['fn'] = $this->findClosure($action);
         }
 
         return $action;
@@ -75,13 +90,19 @@ class Routes {
                 return $value;
         }
 
-        return $this->value($default);
+        return $default instanceof Closure ? $default() : $default;
     }
 
-    private function value($value) {
-        return $value 
-                instanceof 
-                Closure ? $value() : $value;
+    private function getCurrentUri() {
+
+        $basepath = implode('/', array_slice(explode('/', $_SERVER['SCRIPT_NAME']), 0, -1)) . '/';
+        $uri = substr($_SERVER['REQUEST_URI'], strlen($basepath));
+
+        if (strstr($uri, '?'))
+            $uri = substr($uri, 0, strpos($uri, '?'));
+
+        $uri = '/' . trim($uri, '/');
+        return $uri;
     }
 
 }
