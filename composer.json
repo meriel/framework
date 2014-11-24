@@ -9,9 +9,11 @@
         }
     ],
     "autoload": {
-        "classmap": [],
+        "classmap": [
+            "src/"
+        ],
         "files": [
-            "src/Support/helpers.php"
+            "src/Meriel/Support/helpers.php"
         ],
         "psr-0": {
             "Meriel": "src/"
