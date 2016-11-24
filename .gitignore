@@ -1,4 +1,6 @@
-/nbproject/private/
-/nbproject/
-/composer.phar
-/composer.lock
+nbproject/private/
+build/
+nbbuild/
+dist/
+nbdist/
+.nb-gradle/
