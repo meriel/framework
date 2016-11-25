@@ -1,6 +1,6 @@
 <?php
 
-if ( ! function_exists('path') ){
+if ( ! function_exists('public_path') ){
     
     function public_path($path = ''){
         

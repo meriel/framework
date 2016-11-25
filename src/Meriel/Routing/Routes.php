@@ -25,13 +25,8 @@ class Routes {
 
         //if (Request::method() == $this->methods && preg_match($pattern, Request::path(), $matches)) {
         if (Request::method() == $this->methods && preg_match_all('#^' . $this->uri . '$#', $uri, $matches, PREG_OFFSET_CAPTURE)) {
-            //var_dump($matches);
-            //array_shift($matches);
+
             $matches = array_slice($matches, 1);
-
-           // $this->parameters = $matches;
-
-
 
             $this->parameters = array_map(function($match, $index) use ($matches) {
                 

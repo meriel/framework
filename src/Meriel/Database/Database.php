@@ -15,11 +15,9 @@ class Database {
         PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION
     );
 
-    private function __clone() {
-        
-    }
+    private function __clone() {}
 
-    function __construct() {}
+    function __construct(){}
 
     private function getDefaultConnection() {
         $config = Config::get('database');
@@ -70,7 +68,7 @@ class Database {
         return $config['connection'][$name];
     }
 
-    public function __call($method, $parameters) {       // var_dump($method, $parameters);
+    public function __call($method, $parameters) {       
         return call_user_func_array(array($this->connection(), $method), $parameters);
     }
 
