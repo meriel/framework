@@ -1,73 +1,67 @@
-<?php namespace Meriel\Database\Bridget\Relations;
+<?php
+
+namespace Meriel\Database\Bridget\Relations;
 
 use Meriel\Database\Bridget\Model;
 use Meriel\Database\Bridget\QueryBuilder;
 
 class BelongsToMany extends Relation {
 
-	protected $pivot_builder;
-	protected $pivot_result;
+    protected $pivot_builder;
+    protected $pivot_result;
+    protected $foreign_key;
+    protected $other_key;
 
-	protected $foreign_key;
-	protected $other_key;
+    function __construct(Model $parent, Model $related, $pivot_builder, $foreign_key, $other_key) {
+        parent::__construct($parent, $related);
 
-	function __construct(Model $parent, Model $related, $pivot_builder, $foreign_key, $other_key)
-	{
-		parent::__construct($parent, $related);
+        $this->pivot_builder = $pivot_builder;
+        $this->foreign_key = $foreign_key;
+        $this->other_key = $other_key;
+    }
 
-		$this->pivot_builder = $pivot_builder;
-		$this->foreign_key = $foreign_key;
-		$this->other_key = $other_key;
-	}
+    function setJoin() {
+        if ($this->eagerLoading)
+            $pivot_query = $this->pivot_builder->where_in($this->foreign_key, $this->eagerKeys)->get();
+        else
+            $pivot_query = $this->pivot_builder->where($this->foreign_key, $this->parent->getData($this->parent->getPrimaryKey()))->get();
 
-	function setJoin()
-	{
-		if( $this->eagerLoading )
-			$pivot_query = $this->pivot_builder->where_in($this->foreign_key, $this->eagerKeys)->get();
+        $other_id = array();
 
-		else
-			$pivot_query = $this->pivot_builder->where($this->foreign_key, $this->parent->getData( $this->parent->getPrimaryKey() ))->get();
+        $this->pivot_result = $pivot_query->result_array();
+        foreach ($this->pivot_result as $row) {
+            $other_id[] = $row[$this->other_key];
+        }
 
-		$other_id = array();
+        $other_id = array_unique($other_id);
 
-		$this->pivot_result = $pivot_query->result_array();
-		foreach($this->pivot_result as $row)
-		{
-			$other_id[] = $row[ $this->other_key ];
-		}
+        if (!empty($other_id))
+            return $this->related->where_in($this->related->getPrimaryKey(), $other_id);
+    }
 
-		$other_id = array_unique($other_id);
+    function match(Model $parent) {
+        $return = array();
 
-		if(!empty($other_id)) return $this->related->where_in( $this->related->getPrimaryKey(), $other_id );
-	}
+        foreach ($this->eagerResults as $row) {
+            foreach ($this->pivot_result as $pivot_row) {
+                if (
+                        $parent->getData($parent->getPrimaryKey()) == $pivot_row[$this->foreign_key] and
+                        $row->getData($row->getPrimaryKey()) == $pivot_row[$this->other_key]
+                ) {
+                    $return[] = $row;
+                    break;
+                }
+            }
+        }
 
-	function match(Model $parent)
-	{
-		$return = array();
+        return $return;
+    }
 
-		foreach($this->eagerResults as $row)
-		{
-			foreach($this->pivot_result as $pivot_row)
-			{
-				if(
-					$parent->getData( $parent->getPrimaryKey() ) == $pivot_row[ $this->foreign_key ] and
-					$row->getData( $row->getPrimaryKey() ) == $pivot_row[ $this->other_key ]
-				)
-				{
-					$return[] = $row;
-					break;
-				}
-			}
-		}
+    function getResults() {
+        if (empty($this->join))
+            $this->join = $this->setJoin();
 
-		return $return;
-	}
-
-	function getResults()
-	{
-		if(empty($this->join)) $this->join = $this->setJoin();
-
-		return $this->join->get();
-	}
+        return $this->join->get();
+    }
 
 }
