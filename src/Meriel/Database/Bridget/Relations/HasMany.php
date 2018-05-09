@@ -16,7 +16,7 @@ class HasMany extends Relation {
 	function setJoin()
 	{
 		if( $this->eagerLoading )
-			return $this->related->where_in($this->foreign_key, $this->eagerKeys);
+			return $this->related->whereIn($this->foreign_key, $this->eagerKeys);
 
 		else
 			return $this->related->where($this->foreign_key, $this->parent->getData( $this->parent->getPrimaryKey() ));

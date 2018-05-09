@@ -16,7 +16,7 @@ class BelongsTo extends Relation {
 	function setJoin()
 	{
 		if( $this->eagerLoading )
-			return $this->related->where_in($this->related->getPrimaryKey(), $this->eagerKeys);
+			return $this->related->whereIn($this->related->getPrimaryKey(), $this->eagerKeys);
 
 		else
 			return $this->related->where($this->related->getPrimaryKey(), $this->parent->getData( $this->foreign_key ));

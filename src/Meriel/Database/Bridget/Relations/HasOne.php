@@ -8,7 +8,7 @@ class HasOne extends Relation {
 
 	function __construct(Model $parent, Model $related, $foreign_key)
 	{
-		parent::__construct($parent, $related);
+		parent::__construct($parent, $related);                
 
 		$this->foreign_key = $foreign_key;
 	}
@@ -16,7 +16,7 @@ class HasOne extends Relation {
 	function setJoin()
 	{
 		if( $this->eagerLoading )
-			return $this->related->where_in($this->foreign_key, $this->eagerKeys);
+			return $this->related->whereIn($this->foreign_key, $this->eagerKeys);
 
 		else
 			return $this->related->where($this->foreign_key, $this->parent->getData( $this->parent->getPrimaryKey() ));

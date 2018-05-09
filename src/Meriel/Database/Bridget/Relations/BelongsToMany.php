@@ -22,7 +22,7 @@ class BelongsToMany extends Relation {
 
     function setJoin() {
         if ($this->eagerLoading)
-            $pivot_query = $this->pivot_builder->where_in($this->foreign_key, $this->eagerKeys)->get();
+            $pivot_query = $this->pivot_builder->whereIn($this->foreign_key, $this->eagerKeys)->get();
         else
             $pivot_query = $this->pivot_builder->where($this->foreign_key, $this->parent->getData($this->parent->getPrimaryKey()))->get();
 

@@ -243,7 +243,7 @@ class QueryBuilder {
 
 
         foreach ($this->wheres as $where) {
-            $method = "where{$where['type']}";
+            $method = "__where{$where['type']}";
 
             $sql[] = $where['boolean'] . ' ' . $this->$method($where);
         }
@@ -256,6 +256,26 @@ class QueryBuilder {
 
         return '';
     }
+    
+    
+    protected function __whereNested($where) {
+        return  $this->whereNested($where);
+    }
+
+    protected function __whereBasic($where) {
+        return  $this->whereBasic($where);
+    }
+    
+    protected function __whereIn($where)
+    {
+        
+            $values = $this->parameterize($where['values']);
+           // return $this->wrap($where['column']).' in ('.$values.')';
+            
+            return "`" . $where['column'] . "` " . ' in ('.$values.')';
+    }
+    
+    
 
     protected function compileColumns($columns) {
 

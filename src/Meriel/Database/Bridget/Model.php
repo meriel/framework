@@ -257,9 +257,10 @@ class Model {
     // Relationship Methods
     // *********************
 
-    function hasOne($related, $foreign_key = null) {
-        if (empty($foreign_key))
+    function hasOne($related, $foreign_key = null) { 
+        if (empty($foreign_key)){
             $foreign_key = strtolower(get_called_class()) . '_id';
+        }
 
         return new Relations\HasOne($this, new $related, $foreign_key);
     }
