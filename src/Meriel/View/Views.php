@@ -22,8 +22,7 @@ class Views {
         $twig_loader = new \Twig_Loader_Filesystem($view_config['paths']);
         $twig = new \Twig_Environment($twig_loader);
 
-        $twig->addFunction('url', new \Twig_Function_Function('url'));
-        //$twig->addFunction('unserializeArray', new Twig_Function_Function('unserializeArray'));
+
         $contents = $twig->render($this->view . $view_config['file_type'], $this->data);
         
         $response = isset($callback) ? $callback($this, $contents) : null;

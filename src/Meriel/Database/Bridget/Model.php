@@ -378,7 +378,7 @@ class Model {
             return $this;
         }
 
-        return show_error('Unknown function ' . $name, 500);
+        die('Unknown function ' . $name);
     }
 
     public static function __callStatic($name, $arguments) {
