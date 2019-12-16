@@ -1,8 +1,18 @@
-<?php namespace Meriel\Http;
+<?php
+/*
+ * This file is part of the Meriel package.
+ *
+ * (c) Stefano Anedda <dearste@gmail.com>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
+namespace Meriel\Http;
 
 
-
-class Responses {
+class Responses
+{
 
     protected $status;
     public $headers;
@@ -52,32 +62,39 @@ class Responses {
         502 => '502 Bad Gateway',
         503 => '503 Service Unavailable',
         504 => '504 Gateway Timeout',
-        505 => '505 HTTP Version Not Supported'
+        505 => '505 HTTP Version Not Supported',
     );
 
-    public function __construct($content = '', $status = 200, $headers = array()) {
+    public function __construct($content = '', $status = 200, $headers = array())
+    {
 
         $this->setStatusCode($status);
         $this->headers = new Headers(array('Content-Type' => 'text/html'));
         $this->headers->replace($headers);
-        $this->setProtocolVersion('1.0');
+        $this->setProtocolVersion('2.0');
         $this->setContent($content);
         //$this->send();
     }
 
-    public function setStatusCode($status) {
-        $this->status = (int) $status;
+    public function setStatusCode($status)
+    {
+        $this->status = (int)$status;
+
+        return $this;
     }
 
-    public function __clone() {
+    public function __clone()
+    {
         $this->headers = clone $this->headers;
     }
 
-    public function json($data = array()) {
+    public function json($data = array())
+    {
         return $this->toJson($data);
     }
 
-    public function sendHeaders() {
+    public function sendHeaders()
+    {
         // headers have already been sent by the developer
         if (headers_sent()) {
             return $this;
@@ -85,7 +102,7 @@ class Responses {
 
         header(sprintf('HTTP/%s %s', $this->version, $this->getMessageForCode($this->status)));
         //var_dump(sprintf('HTTP/%s %s', $this->version, $this->getMessageForCode($this->status)));
-        
+
         // headers
         foreach ($this->headers->all() as $name => $value) {
             //$_values = explode("\n", $value); var_dump($value);
@@ -97,7 +114,8 @@ class Responses {
         return $this;
     }
 
-    public function setContent($content) {
+    public function setContent($content)
+    {
 
 
         if ($this->couldBeJson($content)) {
@@ -107,46 +125,55 @@ class Responses {
         }
 
 
-        if (null !== $content && !is_string($content) && !is_numeric($content) && !is_callable(array($content, '__toString'))
+        if (null !== $content && !is_string($content) && !is_numeric($content) && !is_callable(array(
+                $content,
+                '__toString',
+            ))
         ) {
-            throw new Exception(sprintf('The Response content must be a string or object implementing __toString(), "%s" given.', gettype($content)));
+            throw new Exception(sprintf('The Response content must be a string or object implementing __toString(), "%s" given.',
+                gettype($content)));
         }
 
 
-
-        $this->content = (string) $content;
+        $this->content = (string)$content;
 
         return $this;
     }
 
-    protected function couldBeJson($content) {
+    protected function couldBeJson($content)
+    {
         return is_array($content);
     }
 
-    protected function toJson($content) {
+    protected function toJson($content)
+    {
 
         return json_encode($content);
     }
 
-    public function sendContent() {
+    public function sendContent()
+    {
         echo $this->content;
 
         return $this;
     }
 
-    public function send() {
+    public function send()
+    {
 
         $this->sendHeaders();
         $this->sendContent();
     }
 
-    public function setProtocolVersion($version) {
+    public function setProtocolVersion($version)
+    {
         $this->version = $version;
 
         return $this;
     }
 
-    public function getMessageForCode($status) {
+    public function getMessageForCode($status)
+    {
         if (isset(self::$messages[$status])) {
             return self::$messages[$status];
         } else {

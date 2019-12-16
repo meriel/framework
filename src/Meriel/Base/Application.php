@@ -1,11 +1,25 @@
-<?php namespace Meriel\Base;
+<?php
+/*
+ * This file is part of the Meriel package.
+ *
+ * (c) Stefano Anedda <dearste@gmail.com>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
+namespace Meriel\Base;
 
 
-class Application extends \Meriel\Container\Container {
+class Application extends \Meriel\Container\Container
+{
 
-    public function __construct() {}
+    public function __construct()
+    {
+    }
 
-    public function run() {
+    public function run()
+    {
 
         $dispatched = false;
         $routes = $this['router']->getRoutes();
@@ -22,49 +36,59 @@ class Application extends \Meriel\Container\Container {
                 continue;
             }
         }
-
-        if (!$dispatched) {
+        if (!$routes) {
             $this->notFound();
+
         } else {
+            if (null === $dispatched) {
+                $this['response']->setContent('The controler must return a response')->send();
+            } else {
 
 
-            $this['response']->setContent($dispatched)->send();
+                $this['response']->setContent($dispatched)->send();
+            }
         }
     }
 
-    protected function notFound() {
+    protected function notFound()
+    {
 
-        $this['response']->setContent($this['view']->make('404'))->send();
+        $this['response']->setStatusCode(404)->setContent($this['view']->make('404'))->send();
     }
 
-    public function registerCoreContainerAliases() {
+    public function registerCoreContainerAliases()
+    {
 
         $aliases = array(
             'router' => '\Meriel\Routing\Router',
             'request' => '\Meriel\Http\Requests',
             'view' => '\Meriel\View\Views',
             'response' => '\Meriel\Http\Responses',
-            'database' => '\Meriel\Database\Database'
+            'database' => '\Meriel\Database\Database',
         );
 
         $this->registerProviders($aliases);
     }
 
-    public function bindBasePaths($paths) {
+    public function bindBasePaths($paths)
+    {
 
         if (is_array($paths)) {
 
             foreach ($paths as $key => $value) {
-                $this['path.' . $key] = $value;
+                $this['path.'.$key] = $value;
             }
         }
     }
 
-    public function registerServices($app) {}
+    public function registerServices($app)
+    {
+    }
 
-    public function get($type) {
+    public function get($type)
+    {
 
-        if($this[$type]){
+        if ($this[$type]) {
             return $this[$type];
         }
 

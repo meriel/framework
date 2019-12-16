@@ -5,7 +5,7 @@
     "license": "MIT",
     "authors": [
         {
-            "name": "Stefano"
+          "name": "Stefano Anedda"
         }
     ],
     "autoload": {

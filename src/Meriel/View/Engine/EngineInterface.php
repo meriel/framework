@@ -8,19 +8,14 @@
  * file that was distributed with this source code.
  */
 
-namespace Meriel\Support;
+namespace Meriel\View\Engine;
 
-use ReflectionClass;
 
-abstract class Services {
+interface EngineInterface
+{
 
-    protected $app;
+    public function getEngine();
 
-    public function __construct($app) {
-        $this->app = $app;
-    }
-    
-    
-    abstract public function register();
+    public function render($template, $data);
 
 }
