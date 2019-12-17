@@ -5,7 +5,8 @@
     "license": "MIT",
     "authors": [
         {
-          "name": "Stefano Anedda"
+            "name": "Stefano Anedda",
+            "email": "dearste@gmail.com"
         }
     ],
     "autoload": {
@@ -20,8 +21,10 @@
         }
     }, 
     "require": {
-        "php": ">=5.4.0",
+        "php": ">=7.0",
         "twig/twig": "^2.0"
     },
-    "require-dev": {}
+    "require-dev": {},
+    "minimum-stability": "dev",
+    "prefer-stable": true
 }

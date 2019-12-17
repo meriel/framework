@@ -20,12 +20,26 @@ class Views
     protected $data;
     protected $engine;
 
+    public function __construct()
+    {
+        $engine_resolver = new EngineResolver();
+        $this->engine = $engine_resolver->resolve()->getResolved();
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getEngine()
+    {
+        return $this->engine;
+    }
+
     public function make($view, $data = array(), $callback = null)
     {
 
         $this->view = $view;
         $this->data = $data;
-        $this->engine = new EngineResolver();
+
 
         return $this->render($callback);
     }
@@ -35,9 +49,7 @@ class Views
 
         $view_config = Config::get('view');
 
-        $resolved = $this->engine->resolve()->getResolved();
-
-        $contents = $resolved->render($this->view.$view_config['file_type'], $this->data);
+        $contents = $this->engine->render($this->view.$view_config['file_type'], $this->data);
 
         $response = isset($callback) ? $callback($this, $contents) : null;
 
