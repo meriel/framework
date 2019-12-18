@@ -32,22 +32,6 @@ class TwigEngine implements EngineInterface
         $this->engine = $twig;
     }
 
-
-    public function addFunction(\Twig\TwigFunction $function)
-    {
-        $this->engine->addFunction($function);
-    }
-
-    public function addGlobal($key, $data)
-    {
-        $this->engine->addGlobal($key, $data);
-    }
-
-    public function addFilter(\Twig\TwigFilter $filter)
-    {
-        $this->engine->addFilter($filter);
-    }
-
     public function getEngine()
     {
         return $this->engine;

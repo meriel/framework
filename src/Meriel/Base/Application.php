@@ -59,15 +59,7 @@ class Application extends \Meriel\Container\Container
     public function registerCoreContainerAliases()
     {
 
-        $aliases = array(
-            'router' => '\Meriel\Routing\Router',
-            'request' => '\Meriel\Http\Requests',
-            'view' => '\Meriel\View\Views',
-            'response' => '\Meriel\Http\Responses',
-            'database' => '\Meriel\Database\Database',
-        );
-
-        $this->registerProviders($aliases);
+        $this->registerProviders($this->aliases);
     }
 
     public function bindBasePaths($paths)

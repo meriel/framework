@@ -63,9 +63,37 @@ class Routes
     public function run()
     {
 
-        $parameters = array_filter($this->parameters(), function ($p) {
+        $params_filtered = array_filter($this->parameters(), function ($p) {
             return isset($p);
         });
+
+        $parameters = [];
+
+        if (\is_array($this->action['fn'])) {
+
+            $reflector = new \ReflectionMethod($this->action['fn'][0], $this->action['fn'][1]);
+
+        } else {
+
+            $reflector = new \ReflectionFunction($this->action['fn']);
+
+        }
+
+        $i = 0;
+
+        foreach ($reflector->getParameters() as $key => $param) {
+            $class = $param->getClass();
+
+            if ($class) {
+                $parameters[$key] = App::make($class->name);
+            } else {
+                if (isset($params_filtered[$i])) {
+                    $parameters[$key] = $params_filtered[$i];
+                    $i++;
+                }
+
+            }
+        }
 
 
         return call_user_func_array($this->action['fn'], $parameters);

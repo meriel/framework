@@ -5,6 +5,15 @@ class Container implements \ArrayAccess {
 
     private $container = array();
 
+    protected $aliases = [
+        'router' => '\Meriel\Routing\Router',
+        'request' => '\Meriel\Http\Requests',
+        'view' => '\Meriel\View\Views',
+        'response' => '\Meriel\Http\Responses',
+        'database' => '\Meriel\Database\Database',
+
+    ];
+
     public function offsetSet($offset, $value) {
         if (is_null($offset)) {
             $this->container[] = $value;
@@ -38,6 +47,20 @@ class Container implements \ArrayAccess {
         foreach ($providers as $key => $class) {
             $this->container[$key] = new $class;
         }
+    }
+
+    protected function resolve($abstract, $parameters = [])
+    {
+        if ($key = array_search($abstract, $this->aliases) && isset($this[$key])) {
+            return $this[$key];
+        }
+
+        return new $abstract($parameters);
+    }
+
+    public function make($abstract, array $parameters = [])
+    {
+        return $this->resolve($abstract, $parameters);
     }
 
 }

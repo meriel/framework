@@ -44,3 +44,16 @@ if ( ! function_exists('escape') )
 		return htmlentities($string, ENT_QUOTES, 'UTF-8', false);
 	}
 }
+
+if (!function_exists('str_contains')) {
+    function str_contains($haystack, $needle, $ignoreCase = false)
+    {
+        if ($ignoreCase) {
+            $haystack = strtolower($haystack);
+            $needle = strtolower($needle);
+        }
+        $needlePos = strpos($haystack, $needle);
+
+        return ($needlePos === false ? false : ($needlePos + 1));
+    }
+}
