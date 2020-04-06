@@ -3,7 +3,7 @@
 namespace Meriel\Database;
 
 use Closure;
-use Meriel\Database\Database as Database;
+use Exception;
 
 class QueryBuilder {
 
@@ -48,15 +48,24 @@ class QueryBuilder {
         $this->connection = $connection;
     }
 
-    public function newQuery() {
+    public function newQuery()
+    {
         return new QueryBuilder($this->connection);
     }
 
-    function __clone() {
+    function __clone()
+    {
         $this->connection = clone $this->connection;
     }
 
-    public function update(array $values) {
+    public function limit($per_page, $offset = 0)
+    {
+
+        return $this;
+    }
+
+    public function update(array $values)
+    {
         $bindings = array_values(array_merge($values, $this->getBindings()));
 
         $sql = $this->compileUpdate($values);
@@ -64,7 +73,8 @@ class QueryBuilder {
         return $this->connection->update($sql, $this->cleanBindings($bindings));
     }
 
-    function insert($values) {
+    function insert($values)
+    {
 
 
         if (!is_array(reset($values))) {
@@ -193,7 +203,7 @@ class QueryBuilder {
 
     public function addBinding($value, $type = 'where') {
         if (!array_key_exists($type, $this->bindings)) {
-            throw new \Exception("Invalid binding type: {$type}.");
+            throw new Exception("Invalid binding type: {$type}.");
         }
 
         if (is_array($value)) {

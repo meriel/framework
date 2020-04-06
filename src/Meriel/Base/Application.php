@@ -11,7 +11,9 @@
 namespace Meriel\Base;
 
 
-class Application extends \Meriel\Container\Container
+use Meriel\Container\Container;
+
+class Application extends Container
 {
 
     public function __construct()
@@ -36,6 +38,7 @@ class Application extends \Meriel\Container\Container
                 continue;
             }
         }
+
         if (!$routes) {
             $this->notFound();
 

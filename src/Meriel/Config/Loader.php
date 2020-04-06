@@ -10,11 +10,6 @@ class Loader implements ArrayAccess {
     public function __construct($path, $group = null) {
 
 
-        //$helpers = __DIR__ . '/../Support/helpers.php';
-
-       // if (file_exists($helpers))
-       //     require_once $helpers;
-
         $this->load($path, $group);
 
         return $this;

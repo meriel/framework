@@ -19,7 +19,7 @@ class Requests {
 
     public function __construct() {
 
-        $this->headers = new \Meriel\Http\Headers(\Meriel\Http\Headers::getHeaders($this->server()));
+        $this->headers = new Headers(Headers::getHeaders($this->server()));
     }
 
     /**
@@ -102,14 +102,24 @@ class Requests {
         }
         $config = Config::get('app');
         return  str_replace($config['url'], '', $this->uri());
-       //return isset($_GET['url']) ? "/" . rtrim($_GET['url'], '/') : '/';
+        //return isset($_GET['url']) ? "/" . rtrim($_GET['url'], '/') : '/';
     }
 
-    private function getQueryString() {
+    private function getQueryString()
+    {
 
         $qs = $this->server('QUERY_STRING');
 
         return '' === $qs ? null : $qs;
+    }
+
+    public function isMethod($type)
+    {
+        $method = $this->server('REQUEST_METHOD');
+        if ($method === $type) {
+            return true;
+        }
+        return false;
     }
 
 }

@@ -57,3 +57,10 @@ if (!function_exists('str_contains')) {
         return ($needlePos === false ? false : ($needlePos + 1));
     }
 }
+
+if (!function_exists('dump')) {
+    function dump($data)
+    {
+        var_dump($data);
+    }
+}
