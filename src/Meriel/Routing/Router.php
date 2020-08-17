@@ -76,7 +76,6 @@ class Router {
         list($class, $method) = explode('@', $controller);
 
         $className = "App\\Controllers\\{$class}";
-
         $closure = new $className();
 
         if (!method_exists($closure, $method)) {
