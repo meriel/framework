@@ -2,7 +2,7 @@
     "name": "meriel/framework",
     "description": "meriel Framework.",
     "keywords": ["framework", "meriel"],
-  "homepage": "https://merielphp.com",
+    "homepage": "https://merielphp.com",
     "license": "MIT",
     "authors": [
         {
